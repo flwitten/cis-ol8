@@ -14,7 +14,7 @@
           lineinfile:
             dest: /etc/modprobe.d/cis.conf
             create: true
-            regexp: "^install cramfs /bin/true$"
+            regexp: "^(#)?install cramfs(\\s|$)"
             line: "install cramfs /bin/true"
             mode: 0600
 
