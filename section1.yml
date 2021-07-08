@@ -58,7 +58,7 @@
             line: "install squashfs /bin/true"
             mode: 0600
 
-        - name: "1.1.1.3 | squashfs | Disable vfat"
+        - name: "1.1.1.3 | squashfs | Disable squashfs"
           modprobe:
             name: squashfs
             state: absent
