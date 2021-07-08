@@ -10,7 +10,7 @@
   tasks:
     - name: "1.1.1.1 | Ensure mounting of cramfs filesytem is disabled"
       block:
-        - name: "1.1.1.1 | Modprobe Config"
+        - name: "1.1.1.1 | cramfs | Modprobe Config"
           lineinfile:
             dest: /etc/modprobe.d/cis.conf
             create: true
@@ -18,7 +18,7 @@
             line: "install cramfs /bin/true"
             mode: 0600
 
-        - name: "1.1.1.1 | Disable cramfs"
+        - name: "1.1.1.1 | cramfs | Disable cramfs"
           modprobe:
             name: cramfs
             state: absent
@@ -27,6 +27,26 @@
         - l1-workstation
         - automated
         - rule_1.1.1.1
+    
+    - name: "1.1.1.2 | Ensure mounting of vfat filesytem is limited"
+      block:
+        - name: "1.1.1.2 | vfat | Modprobe Config"
+          lineinfile:
+            dest: /etc/modprobe.d/cis.conf
+            create: true
+            regexp: "^(#)?install vfat(\\s|$)"
+            line: "install vfat /bin/true"
+            mode: 0600
+
+        - name: "1.1.1.2 | Disable vfat"
+          modprobe:
+            name: vfat
+            state: absent
+      tags:
+        - l1-server
+        - l1-workstation
+        - manual
+        - rule_1.1.1.2
 
 
 
