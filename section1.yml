@@ -88,5 +88,9 @@
         - automated
         - rule_1.1.1.4
 
+    - name: "1.1.2 | Ensure /tmp is configured"
+      debug:
+        var: ansible_mounts
+
 
 
