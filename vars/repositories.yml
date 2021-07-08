@@ -1,0 +1,47 @@
+---
+gpg_key_dir: "file:///etc/pki/rpm"
+
+repositories:
+  - name: ol8_baseos_latest
+    baseurl: "https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/baseos/latest/$basearch/"
+    desc: "Oracle Linux 8 BaseOS Latest ($basearch)"
+    enabled: 'true' 
+    gpgcheck: 'true'
+    gpgkey: "{{ gpg_key_dir }}/RPM_GPG-KEY-oracle"
+
+  - name: ol8_appstream
+    baseurl: "https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/appstream/$basearch/"
+    desc: "Oracle Linux 8 Application Stream ($basearch)"
+    enabled: 'true'
+    gpgcheck: 'true'
+    gpgkey: "{{ gpg_key_dir }}/RPM_GPG-KEY-oracle"
+    
+  - name: ol8_UEKR6
+    baseurl: "https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/UEKR6/$basearch/"
+    desc: "Oracle Linux 8 UEK6 ($basearch)"
+    enabled: 'true'
+    gpgcheck: 'true'
+    gpgkey: "{{ gpg_key_dir }}/RPM_GPG-KEY-oracle"
+
+  - name: ol8_UEKR6_RDMA
+    baseurl: "https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/UEKR6/RDMA/$basearch/"
+    desc: "Oracle Linux 8 UEK6 RDMA ($basearch)"
+    enabled: 'true'
+    gpgcheck: 'true'
+    gpgkey: "{{ gpg_key_dir }}/RPM_GPG-KEY-oracle"
+
+  - name: ol8_addons
+    baseurl: "https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/addons/$basearch/"
+    desc: "Oracle Linux 8 Addons ($basearch)"
+    enabled: 'true'
+    gpgcheck: 'true'
+    gpgkey: "{{ gpg_key_dir }}/RPM_GPG-KEY-oracle"
+
+  - name: ol8_developer_EPEL
+    baseurl: "https://yum$ociregion.$ocidomain/repo/OracleLinux/OL8/developer/EPEL/$basearch/"
+    desc: "Oracle Linux $releasever EPEL Packages for Development ($basearch)"
+    enabled: 'true'
+    gpgcheck: 'true'
+    gpgkey: "{{ gpg_key_dir }}/RPM_GPG-KEY-oracle"
+
+
