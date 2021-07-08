@@ -12,8 +12,14 @@
   remote_user: root
 
   vars:
-    user: ansible
+    devops_user: ansible
     local_ssh_dir: "/etc/keys"
+    repository_file: "octs"
+  
+  vars_prompt:
+    - name: "ansible_ssh_pass"
+      prompt: "Enter SSH Password for root"
+      private: yes
 
   vars_files:
     - vars/repositories.yml
@@ -29,7 +35,7 @@
     
     - name: Create ansible user
       user:
-        name: ansible
+        name: '{{ devops_user }}'
         shell: /bin/bash
         create_home: true
       become: true
@@ -37,7 +43,7 @@
     - name: Grant sudo to ansible
       lineinfile:
         path: /etc/sudoers.d/ansible
-        line: 'ansible  ALL=(ALL)  NOPASSWD: ALL'
+        line: '{{ devops_user }}  ALL=(ALL)  NOPASSWD: ALL'
         state: present
         create: true
     
@@ -46,15 +52,15 @@
         path: /etc/keys/ansible
         state: directory
         mode: 0700
-        owner: ansible
+        owner: '{{ devops_user }}'
         group: root
 
     - name: Copy SSH Public Key
       authorized_key:
         user: ansible
-        key: "{{ lookup('file', local_ssh_dir + '/' + local_user.stdout + '/' + user + '.pub' ) }}"
+        key: "{{ lookup('file', local_ssh_dir + '/' + local_user.stdout + '/' + devops_user + '.pub' ) }}"
         state: present
-        path: /etc/keys/ansible/authorized_keys
+        path: '/etc/keys/{{ devops_user }}/authorized_keys'
         manage_dir: true
 
     - name: Change Authorized Key locatoin
@@ -66,7 +72,7 @@
     
     - name: Add Repositories
       yum_repository:
-        file: octs
+        file: '{{ repository_file }}'
         name: '{{ item.name }}'
         description: '{{ item.desc }}'
         baseurl: '{{ item.baseurl }}'
@@ -74,8 +80,17 @@
         gpgkey: '{{ item.gpgkey }}'
         enabled: '{{ item.enabled }}'
       loop: '{{ repositories }}'
-      notify: Clean DNF Cache
+      notify: clean yum metadata
     
+    - name: Remove default Repository files
+      file:
+        state: absent
+        name: '/etc/yum.repos.d/{{ item }}'
+      loop:
+        - oracle-linux-ol8.repo
+        - uek-ol8.repo
+        - virt-ol8.repo
+
     - name: Update all packages
       dnf:
         name: "*"
@@ -92,10 +107,8 @@
         name: sshd
         state: restarted
     
-    - name: Clean DNF Cache
-      shell: dnf clean all && dnf makecache
+    - name: clean yum metadata
+      command: yum clean metadata
       args:
-        warn: false
-      changed_when: no
-      check_mode: no
+        warn: no
 ...
