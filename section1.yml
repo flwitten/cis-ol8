@@ -1,0 +1,30 @@
+---
+# CIS Benchmark - Oracle Linux 8 - v1.0.1 - 2021/05/20
+# 
+# Section 1 - Initial Setup
+
+- name: "1.1 | Filesystem Configuration"
+  hosts: all
+  
+  tasks:
+    - name: "1.1.1.1 | Ensure mounting of cramfs filesytem is disabled"
+      block:
+        - name: "1.1.1.1 | Modprobe Config"
+          lineinfile:
+            dest: /etc/modprobe.d/cis.conf
+            create: true
+            regexp: "^install cramfs /bin/true$"
+            mode: 0600
+
+        - name: "1.1.1.1 | Disable cramfs"
+          modprobe:
+            name: cramfs
+            state: absent
+      tags:
+        - l1-server
+        - l1-workstation
+        - automated
+        - rule_1.1.1.1
+
+
+
