@@ -102,6 +102,16 @@
       loop: "{{ ansible_mounts }}"
       notify: remount tmp
       when: item.mount == "/tmp"
+    
+    - name: "1.1.6 | Ensure separate partition exists for /var"
+      mount: 
+        name: /tmp
+        src: "{{ item.device }}"
+        fstype: "{{ item.fstype }}"
+        state: present
+        opts: defaults
+      loop: "{{ ansible_mounts }}"
+      when: item.mount == "/var"
 
   handlers:
     - name: remount tmp
