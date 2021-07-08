@@ -47,6 +47,26 @@
         - l1-workstation
         - manual
         - rule_1.1.1.2
+    
+    - name: "1.1.1.3 | Ensure mounting of squashfs filesytem is disabled"
+      block:
+        - name: "1.1.1.3 | squashfs | Modprobe Config"
+          lineinfile:
+            dest: /etc/modprobe.d/cis.conf
+            create: true
+            regexp: "^(#)?install squashfs(\\s|$)"
+            line: "install squashfs /bin/true"
+            mode: 0600
+
+        - name: "1.1.1.3 | Disable vfat"
+          modprobe:
+            name: squashfs
+            state: absent
+      tags:
+        - l1-server
+        - l1-workstation
+        - automated
+        - rule_1.1.1.3
 
 
 
