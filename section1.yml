@@ -208,6 +208,13 @@
         state: present
         opts: nodev,nosuid,noexec
       notify: remount dev_shm
+      tags: 
+        - l1-server
+        - l1-workstation
+        - automated
+        - rule_1.1.15
+        - rule_1.1.16
+        - rule_1.1.17
 
 
   handlers:
