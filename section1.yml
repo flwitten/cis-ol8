@@ -226,7 +226,7 @@
         path: /home
         state: remounted
     
-    - name: remount home
+    - name: remount dev_shm
       mount:
         path: /dev/shm
         state: remounted
