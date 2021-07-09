@@ -102,19 +102,60 @@
       loop: "{{ ansible_mounts }}"
       notify: remount tmp
       when: item.mount == "/tmp"
+      tags:
+        - l1-server
+        - l1-workstation
+        - automated
+        - rule_1.1.2
+        - rule_1.1.3
+        - rule_1.1.4
+        - rule_1.1.5
     
     - name: "1.1.6 | Ensure separate partition exists for /var"
       mount: 
-        name: /tmp
+        name: /var
         src: "{{ item.device }}"
         fstype: "{{ item.fstype }}"
         state: present
         opts: defaults
       loop: "{{ ansible_mounts }}"
       when: item.mount == "/var"
+      tags:
+        - l2-server
+        - l2-workstation
+        - automated
+        - rule_1.1.6
+
+    - name: |
+        "1.1.7 | Ensure seperate partition exists for /var/tmp"
+        "1.1.8 | Ensure nodev option set on /var/tmp partition"
+        "1.1.9 | Ensure nosuid option set on /var/tmp partition"
+        "1.1.10 | Ensure noexec option set on /var/tmp partition"
+      mount: 
+        name: /var/tmp
+        src: "{{ item.device }}"
+        fstype: "{{ item.fstype }}"
+        state: present
+        opts: defaults,nodev,nosuid,noexec
+      loop: "{{ ansible_mounts }}"
+      notify: remount var_tmp
+      when: item.mount == "/var/tmp"
+      tags:
+        - l1-server
+        - l1-workstation
+        - automated
+        - rule_1.1.2
+        - rule_1.1.3
+        - rule_1.1.4
+        - rule_1.1.5
 
   handlers:
     - name: remount tmp
       mount:
         path: /tmp
+        state: remounted
+    
+    - name: remount var_tmp
+      mount:
+        path: /var/tmp
         state: remounted
