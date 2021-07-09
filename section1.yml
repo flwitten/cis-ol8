@@ -179,14 +179,17 @@
         - automated
         - rule_1.1.12
     
-    - name: "1.1.13 | Ensure separate partition exists for /homet"
+    - name: |
+        "1.1.13 | Ensure separate partition exists for /homet"
+        "1.1.14 | Ensure nodev option set on /home partition"
       mount: 
         name: /home
         src: "{{ item.device }}"
         fstype: "{{ item.fstype }}"
         state: present
-        opts: defaults
+        opts: defaults,nodev
       loop: "{{ ansible_mounts }}"
+      notify: remount home
       when: item.mount == "/home"
       tags:
         - l2-server
@@ -203,4 +206,9 @@
     - name: remount var_tmp
       mount:
         path: /var/tmp
+        state: remounted
+    
+    - name: remount home
+      mount:
+        path: /home
         state: remounted
