@@ -178,6 +178,21 @@
         - l2-workstation
         - automated
         - rule_1.1.12
+    
+    - name: "1.1.13 | Ensure separate partition exists for /homet"
+      mount: 
+        name: /home
+        src: "{{ item.device }}"
+        fstype: "{{ item.fstype }}"
+        state: present
+        opts: defaults
+      loop: "{{ ansible_mounts }}"
+      when: item.mount == "/home"
+      tags:
+        - l2-server
+        - l2-workstation
+        - automated
+        - rule_1.1.13
 
   handlers:
     - name: remount tmp
