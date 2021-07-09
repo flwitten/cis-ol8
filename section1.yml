@@ -196,6 +196,19 @@
         - l2-workstation
         - automated
         - rule_1.1.13
+    
+    - name: |
+        "1.1.15 | Ensure nodev option set on /dev/shm partition"
+        "1.1.16 | Ensure nosuid option set on /dev/shm partition"
+        "1.1.17 | Ensure noexec option set on /dev/shm partition"
+      mount:
+        name: /dev/shm
+        src: "tmpfs"
+        fstype: "tmpfs"
+        state: present
+        opts: nodev,nosuid,noexec
+      notify: remount dev_shm
+
 
   handlers:
     - name: remount tmp
@@ -211,4 +224,9 @@
     - name: remount home
       mount:
         path: /home
+        state: remounted
+    
+    - name: remount home
+      mount:
+        path: /dev/shm
         state: remounted
