@@ -244,9 +244,8 @@
         - rule_1.1.21
 
     - name: "1.1.22 | Disable Automouting"
-      systemd: 
+      service: 
         name: autofs
-        state: stopped
         enabled: false
 
 
