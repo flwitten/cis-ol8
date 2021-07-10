@@ -243,6 +243,13 @@
         - automated
         - rule_1.1.21
 
+    - name: "1.1.22 | Disable Automouting"
+      systemd: 
+        name: autofs
+        state: stopped
+        enabled: false
+
+
 
   handlers:
     - name: remount tmp
