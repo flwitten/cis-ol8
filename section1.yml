@@ -215,6 +215,33 @@
         - rule_1.1.15
         - rule_1.1.16
         - rule_1.1.17
+    
+    - name: |
+        "1.1.18 | Ensure nodev option set on removable media partitions"
+        "1.1.19 | Ensure nosuid option set on removable media partitions"
+        "1.1.20 | Ensure noexec option set on removable media partitions"
+      debug:
+        msg: ">>> Not applicable <<<"
+      changed_when: false
+      tags:
+        - l1-server
+        - l1-workstation
+        - manual
+        - rule_1.1.18
+        - rule_1.1.19
+        - rule_1.1.20
+    
+    - name: "1.1.21 | Ensure sticky bit is set on all world-writable directories"
+      shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+      args:
+        warn: no
+      changed_when: false
+      failed_when: false
+      tags:
+        - l1-server
+        - l1-workstation
+        - automated
+        - rule_1.1.21
 
 
   handlers:
