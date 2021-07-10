@@ -8,6 +8,10 @@
   become: true
   
   tasks:
+    - name: "Gather Package facts"
+      package_facts:
+        manager: auto
+        
     - name: "1.1.1.1 | Ensure mounting of cramfs filesytem is disabled"
       block:
         - name: "1.1.1.1 | cramfs | Modprobe Config"
@@ -247,6 +251,8 @@
       service: 
         name: autofs
         enabled: false
+      when:
+        - "'autofs' in ansible_facts.packages"
 
 
 
