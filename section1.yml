@@ -11,6 +11,10 @@
     - name: "Gather Package facts"
       package_facts:
         manager: auto
+
+    - name: "Print all package facts"
+      debug:
+        var: ansible_facts.packages
         
     - name: "1.1.1.1 | Ensure mounting of cramfs filesytem is disabled"
       block:
